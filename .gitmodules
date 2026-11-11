@@ -1,0 +1,8 @@
+[submodule "engine/ffmpeg"]
+	path = engine/ffmpeg
+	url = https://github.com/FFmpeg/FFmpeg.git
+	shallow = true
+[submodule "engine/silk-sdk"]
+	path = engine/silk-sdk
+	url = https://github.com/kn007/silk-v3-decoder.git
+	shallow = true

@@ -1,0 +1,20 @@
+{
+  "schemaVersion": 1,
+  "version": "8.0.git",
+  "upstream": {
+    "url": "https://github.com/FFmpeg/FFmpeg.git",
+    "commit": "9bfa1635aef08e777deaeeae15ff9a5ade412188",
+    "tree": "3ce4e0fca93864e7bd517b95f91c1e9b5513328e"
+  },
+  "patches": [],
+  "sourceTreeSha256": "679758ea78c023abb8a9e24045b3b2c6fef1a699545aa79bdcbcc5dc57c2b318",
+  "fileCount": 10078,
+  "sourceHashExclusions": [
+    "tests/ref/fate/h264-conformance-canl1_toshiba_g",
+    "tests/ref/fate/h264-conformance-cvmaqp2_sony_g"
+  ],
+  "fullSourceTreeSha256": "6235b79db0cfea8b4e91a415e2a9127faef8c11b5ca26129067121b52d41b0d5",
+  "fullSourceFileCount": 10080,
+  "legacySnapshotSha256": "ef348c4516d89d29f24f23d9210e75bef3ab85c1a6bd69d7415a500122f6f926",
+  "provenance": "All 10,080 upstream files match the original source byte-for-byte. The historical snapshot omitted two tracked FATE reference files due to upstream .gitignore's *_g pattern. Both files remain in the prepared source and full-tree hash; only the backward-compatible sourceTreeSha256 excludes them. The custom minimal build is defined by components.txt, not FFmpeg source patches."
+}

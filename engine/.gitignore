@@ -1,0 +1,11 @@
+node_modules/
+output/
+artifacts/
+*.o
+*.obj
+*.a
+*.lib
+*.node
+*.log
+*.tmp
+.DS_Store

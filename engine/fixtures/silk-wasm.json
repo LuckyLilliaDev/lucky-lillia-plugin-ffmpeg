@@ -1,0 +1,11 @@
+{
+  "generator": "silk-wasm@3.7.1",
+  "sampleRate": 24000,
+  "channels": 1,
+  "inputSamples": 24000,
+  "silkSha256": "fc48a75fc449bee4b2dd3fc1b51cd3e6fda794c8850bb67c4a7f26b95754f7ce",
+  "decodedSha256": "366fcd60a8a9bdff6f884dd049cd16fe7589e1985e71de880256fcc2ecefeacd",
+  "decodedSamples": 24000,
+  "encoderDurationMs": 1000,
+  "decoderDurationMs": 1040
+}

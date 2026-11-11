@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "version": "1.0.9.6",
+  "upstream": {
+    "url": "https://github.com/kn007/silk-v3-decoder.git",
+    "commit": "507be6bca8ce1fb977a061481f1d79e8c610e309"
+  },
+  "paths": [
+    "LICENSE",
+    "silk/Makefile",
+    "silk/interface",
+    "silk/src"
+  ],
+  "sourceTreeSha256": "ea860b2fbb857ddb386a6b3152bc5aafbca880a87356b42f4d6c8294fe873c85",
+  "fileCount": 163,
+  "library": {
+    "sources": "silk/src/*.c",
+    "language": "C99",
+    "assembly": false,
+    "flags": [
+      "-O2",
+      "-fPIC",
+      "-fwrapv",
+      "-fno-strict-aliasing"
+    ]
+  },
+  "license": "BSD-3-Clause-Clear"
+}

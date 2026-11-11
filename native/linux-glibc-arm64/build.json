@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "target": "linux-glibc-arm64",
+  "filename": "LuckyLillia.FFmpeg.node",
+  "sha256": "bb620b45190e3bf2efe203ca88d32c9dedacaad1902dfe44621bbf3cde4c11a4",
+  "addonSourceSha256": "a0c2764338fd4b17cb9d9545c277e830b43dc8f15aec771b46357f69840ef85e",
+  "ffmpegVersion": "8.0.git",
+  "napiVersion": 8,
+  "source": {
+    "kind": "verified-static-cache",
+    "upstream": {
+      "url": "https://github.com/FFmpeg/FFmpeg.git",
+      "commit": "9bfa1635aef08e777deaeeae15ff9a5ade412188",
+      "tree": "3ce4e0fca93864e7bd517b95f91c1e9b5513328e"
+    },
+    "patches": [],
+    "compiledSource": {
+      "kind": "custom-snapshot",
+      "sha256": "ef348c4516d89d29f24f23d9210e75bef3ab85c1a6bd69d7415a500122f6f926",
+      "sourceTreeSha256": "679758ea78c023abb8a9e24045b3b2c6fef1a699545aa79bdcbcc5dc57c2b318"
+    },
+    "cacheReceiptSha256": "1fb693de717f0a5fd5fd4393a34ec6f2c4b0530fcfcf34602d0a774b870f6a98",
+    "sourceTreeSha256": "679758ea78c023abb8a9e24045b3b2c6fef1a699545aa79bdcbcc5dc57c2b318",
+    "fullSourceTreeSha256": "6235b79db0cfea8b4e91a415e2a9127faef8c11b5ca26129067121b52d41b0d5",
+    "fullSourceFileCount": 10080,
+    "sourceHashExclusions": [
+      "tests/ref/fate/h264-conformance-canl1_toshiba_g",
+      "tests/ref/fate/h264-conformance-cvmaqp2_sony_g"
+    ]
+  },
+  "componentConfigSha256": "2333f21f847e5b5be73fefe4f05b393ae1fa1bbefb4db1c7c5d190cee6c736c8",
+  "silkSource": {
+    "upstream": {
+      "url": "https://github.com/kn007/silk-v3-decoder.git",
+      "commit": "507be6bca8ce1fb977a061481f1d79e8c610e309"
+    },
+    "sourceTreeSha256": "ea860b2fbb857ddb386a6b3152bc5aafbca880a87356b42f4d6c8294fe873c85",
+    "version": "1.0.9.6"
+  },
+  "silkLibrarySha256": "2bd82ca9ce67a2f2ffdd71323e702d61000bc10f88bfeada0cd1ebe540ec13c7",
+  "silkRecipeSha256": "2f7e33935c4e5a0997857d6620929c54ca13df348aad161fdf53180ae5e224a3",
+  "compiler": "Zig 0.14.1 (Clang 19.1.7), WSL cross build",
+  "dependencies": "pinned-static",
+  "dynamicLibraries": [
+    "libm.so.6",
+    "libpthread.so.0",
+    "libc.so.6",
+    "libdl.so.2"
+  ],
+  "licenses": [
+    "LGPL-3.0-or-later",
+    "LGPL-2.0-or-later",
+    "Apache-2.0",
+    "BSD-3-Clause",
+    "Zlib",
+    "BSD-3-Clause-Clear",
+    "MIT",
+    "Apache-2.0 WITH LLVM-exception"
+  ],
+  "sources": [
+    {
+      "name": "zlib",
+      "version": "1.3.1",
+      "sha256": "9a93b2b7dfdac77ceba5a558a580e74667dd6fede4585b91eefb60f03b72df23",
+      "url": "https://zlib.net/fossils/zlib-1.3.1.tar.gz"
+    },
+    {
+      "name": "lame",
+      "version": "3.100",
+      "sha256": "ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e",
+      "url": "https://downloads.sourceforge.net/project/lame/lame/3.100/lame-3.100.tar.gz"
+    },
+    {
+      "name": "opencore-amr",
+      "version": "0.1.6",
+      "sha256": "483eb4061088e2b34b358e47540b5d495a96cd468e361050fae615b1809dc4a1",
+      "url": "https://downloads.sourceforge.net/project/opencore-amr/opencore-amr/opencore-amr-0.1.6.tar.gz"
+    },
+    {
+      "name": "speex",
+      "version": "1.2.1",
+      "sha256": "4b44d4f2b38a370a2d98a78329fefc56a0cf93d1c1be70029217baae6628feea",
+      "url": "https://downloads.xiph.org/releases/speex/speex-1.2.1.tar.gz"
+    },
+    {
+      "name": "ogg",
+      "version": "1.3.5",
+      "sha256": "c4d91be36fc8e54deae7575241e03f4211eb102afb3fc0775fbbc1b740016705",
+      "url": "https://downloads.xiph.org/releases/ogg/libogg-1.3.5.tar.xz"
+    },
+    {
+      "name": "vorbis",
+      "version": "1.3.7",
+      "sha256": "b33cc4934322bcbf6efcbacf49e3ca01aadbea4114ec9589d1b1e9d20f72954b",
+      "url": "https://downloads.xiph.org/releases/vorbis/libvorbis-1.3.7.tar.xz"
+    },
+    {
+      "name": "node-headers",
+      "version": "22.22.2",
+      "sha256": "90e5ef0fdf02f88487f904a798836b35bd44896046d502873bc625ac2baeded2",
+      "url": "https://nodejs.org/dist/v22.22.2/node-v22.22.2-headers.tar.gz"
+    },
+    {
+      "name": "node-lib",
+      "version": "22.22.2",
+      "sha256": "0d8d8bcc11daea60f5dd4da414e72ccb785718345ec8fbec52cfc7d1a2326293",
+      "url": "https://nodejs.org/dist/v22.22.2/win-x64/node.lib"
+    }
+  ],
+  "crossBuild": {
+    "toolchain": "Zig 0.14.1",
+    "libcBaseline": "glibc 2.28",
+    "asm": false,
+    "staticRuntimes": [
+      "LLVM libc++",
+      "LLVM libc++abi",
+      "LLVM libunwind",
+      "Zig compiler-rt"
+    ],
+    "sourceSha256": "a0c2764338fd4b17cb9d9545c277e830b43dc8f15aec771b46357f69840ef85e",
+    "validation": "Full media and native SILK smoke passed: independent WASM fixture decode, upstream SDK 40/60/100 ms and mixed packet lengths, malformed payload rejection, resampling, concurrency, and legacy eight audio/video checks",
+    "runtime": "QEMU AArch64 8.2.2, glibc sysroot, Node 24.13.0"
+  }
+}

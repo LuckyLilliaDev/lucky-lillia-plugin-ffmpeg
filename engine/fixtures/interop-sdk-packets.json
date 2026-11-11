@@ -1,0 +1,36 @@
+{
+  "generator": "Unmodified silk/test/Encoder.c from kn007/silk-v3-decoder@507be6bca8ce1fb977a061481f1d79e8c610e309, linked to its generic C SDK 1.0.9.6",
+  "input": "1.2 seconds mono s16le 440 Hz sine, amplitude 12000, 24000 Hz, rounded with Python round()",
+  "inputPcmSha256": "78aadb0d06157cd480b0d4176b736168d9b243f3b251c8f07cfdcf9746831bdc",
+  "options": "-Fs_API 24000 -Fs_maxInternal 24000 -packetlength {40,60,100} -rate 24000 -complexity 2 -quiet",
+  "referenceDecoder": "Unmodified silk/test/Decoder.c from the same SDK commit, -Fs_API 24000 -quiet",
+  "records": [
+    {
+      "file": "interop-sdk-standard-40.silk",
+      "packetMs": 40,
+      "packets": 30,
+      "durationSeconds": 1.2,
+      "encodedSha256": "479f1924364fdb34a56c296dfc6f05962cc560558a0c06c89c2e57f5a81058f4",
+      "decodedPcmSha256": "d8a8e51ba08edf9d9adc422a2be8fc511a8f89acf09ad84747fd257c6440b9a9",
+      "decodedPcmBytes": 57600
+    },
+    {
+      "file": "interop-sdk-standard-60.silk",
+      "packetMs": 60,
+      "packets": 20,
+      "durationSeconds": 1.2,
+      "encodedSha256": "b38a8ccce989bb4f5b1bf913e84540f641c516aaefa9f66aad2d3fee70e22482",
+      "decodedPcmSha256": "5c0bd82126599ba6f83c1bd6d86f61151761f988f7e5b389c92830920b73bb31",
+      "decodedPcmBytes": 57600
+    },
+    {
+      "file": "interop-sdk-standard-100.silk",
+      "packetMs": 100,
+      "packets": 12,
+      "durationSeconds": 1.2,
+      "encodedSha256": "bd34bb8582278593d8218854141d760f3f1f65385244d21e51d680bbe042a025",
+      "decodedPcmSha256": "d97c5c3d25305ac03fa995cbd2b1eb46c4defc2f70fcecbb6f2a9568b092b6ef",
+      "decodedPcmBytes": 57600
+    }
+  ]
+}

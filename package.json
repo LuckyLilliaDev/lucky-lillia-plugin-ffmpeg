@@ -1,0 +1,43 @@
+{
+  "name": "lucky-lillia-plugin-ffmpeg",
+  "version": "1.1.0",
+  "description": "为 LuckyLillia 提供可选的音视频转码、媒体信息和缩略图服务",
+  "type": "module",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./lib/index.d.ts",
+      "default": "./lib/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": ["lib", "native", "README.md"],
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "build:native": "bash engine/build.sh",
+    "build:cross": "bash engine/cross-build.sh",
+    "smoke:native": "node engine/smoke.mjs",
+    "sync:native": "node engine/sync-to-plugin.mjs",
+    "check:native": "node engine/sync-to-plugin.mjs --check",
+    "test": "node test/native-loader.mjs && node test/service.mjs",
+    "prepack": "npm run build"
+  },
+  "engines": { "node": ">=22.15.0" },
+  "peerDependencies": { "@luckylillia/plugin-sdk": "^1.0.0" },
+  "keywords": ["luckylillia-plugin", "ffmpeg", "silk", "audio", "video"],
+  "license": "LGPL-3.0-or-later",
+  "llbot": {
+    "title": { "zh": "FFmpeg 媒体服务", "en": "FFmpeg media service" },
+    "description": {
+      "zh": "按需安装的媒体服务，提供 SILK 编解码、音频转码、视频信息和缩略图，无需系统安装 FFmpeg。",
+      "en": "Optional native SILK and audio conversion, media probing and thumbnails. No system FFmpeg installation required."
+    },
+    "category": "service",
+    "details": "README.md",
+    "service": {
+      "implements": ["ffmpeg"],
+      "labels": { "ffmpeg": "FFmpeg 媒体服务" }
+    }
+  }
+}

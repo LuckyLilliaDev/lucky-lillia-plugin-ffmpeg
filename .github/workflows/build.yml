@@ -1,0 +1,182 @@
+name: Build FFmpeg plugin
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - target: win-x64
+            runner: windows-2022
+            kind: windows
+          - target: macos-arm64
+            runner: macos-15
+            kind: macos
+          - target: linux-glibc-x64
+            runner: ubuntu-24.04
+            kind: linux
+            image: node:22.22.2-bullseye
+          - target: linux-glibc-arm64
+            runner: ubuntu-24.04-arm
+            kind: linux
+            image: node:22.22.2-bullseye
+          - target: linux-musl-x64
+            runner: ubuntu-24.04
+            kind: musl
+            image: node:22.22.2-alpine
+          - target: linux-musl-arm64
+            runner: ubuntu-24.04-arm
+            kind: musl
+            image: node:22.22.2-alpine
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 60
+    defaults:
+      run:
+        working-directory: engine
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          submodules: recursive
+      - uses: actions/setup-node@v4
+        if: matrix.kind == 'windows' || matrix.kind == 'macos'
+        with:
+          node-version: 22.22.2
+      - uses: actions/cache@v4
+        with:
+          path: engine/output/ffmpeg-downloads
+          key: ffmpeg-sources-${{ hashFiles('engine/sources.tsv') }}-${{ matrix.target }}
+      - uses: msys2/setup-msys2@v2
+        if: matrix.kind == 'windows'
+        with:
+          msystem: UCRT64
+          path-type: inherit
+          install: >-
+            make nasm curl tar diffutils
+            mingw-w64-ucrt-x86_64-gcc
+            mingw-w64-ucrt-x86_64-pkgconf
+      - name: Build and test Windows
+        if: matrix.kind == 'windows'
+        shell: msys2 {0}
+        run: |
+          JOBS=4 bash build.sh --target win-x64
+          node smoke.mjs artifacts/win-x64/LuckyLillia.FFmpeg.node
+      - name: Install macOS build tools
+        if: matrix.kind == 'macos'
+        run: brew install pkgconf nasm
+      - name: Build and test macOS
+        if: matrix.kind == 'macos'
+        env:
+          MACOSX_DEPLOYMENT_TARGET: '11.0'
+          JOBS: '4'
+        run: |
+          bash build.sh --target macos-arm64
+          node smoke.mjs artifacts/macos-arm64/LuckyLillia.FFmpeg.node
+      - name: Build and test Linux in target libc
+        if: matrix.kind == 'linux' || matrix.kind == 'musl'
+        working-directory: .
+        env:
+          BUILD_IMAGE: ${{ matrix.image }}
+          BUILD_KIND: ${{ matrix.kind }}
+          BUILD_TARGET: ${{ matrix.target }}
+        run: |
+          docker run --rm -v "$PWD:/work" -w /work/engine \
+            -e BUILD_KIND -e BUILD_TARGET -e JOBS=4 "$BUILD_IMAGE" sh -ec '
+              if [ "$BUILD_KIND" = musl ]; then
+                apk add --no-cache git bash build-base pkgconf nasm curl tar xz perl linux-headers binutils
+              else
+                apt-get update
+                apt-get install -y --no-install-recommends git build-essential pkg-config nasm curl xz-utils perl
+              fi
+              git config --global --add safe.directory /work
+              git config --global --add safe.directory /work/engine/ffmpeg
+              git config --global --add safe.directory /work/engine/silk-sdk
+              bash build.sh --target "$BUILD_TARGET"
+              node smoke.mjs "artifacts/$BUILD_TARGET/LuckyLillia.FFmpeg.node"
+            '
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-native-${{ matrix.target }}
+          path: engine/artifacts/
+          if-no-files-found: error
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-relink-${{ matrix.target }}
+          path: engine/output/ffmpeg-native/${{ matrix.target }}/ffmpeg-relink-${{ matrix.target }}.tar.gz
+          if-no-files-found: error
+      - name: Package corresponding source
+        if: matrix.target == 'linux-glibc-x64'
+        working-directory: .
+        run: |
+          mkdir -p output
+          paths=(package.json README.md src scripts test native/loader.cjs .github
+            .gitattributes .gitignore .gitmodules
+            engine/.gitattributes engine/.gitignore
+            engine/addon.cc engine/build.sh engine/cross-build.sh engine/cross
+            engine/prepare-source.mjs engine/write-build.mjs
+            engine/build-silk.sh engine/silk.mk engine/prepare-silk.mjs
+            engine/write-silk-build.mjs engine/silk-source.json engine/libav-cache.mjs
+            engine/silk-sdk/LICENSE engine/silk-sdk/silk/Makefile
+            engine/silk-sdk/silk/interface engine/silk-sdk/silk/src
+            engine/collect-licenses.mjs engine/sync-to-plugin.mjs engine/components.txt
+            engine/sources.tsv engine/ffmpeg-source.json engine/ffmpeg engine/docs
+            engine/legacy engine/fixtures engine/smoke.mjs engine/licenses engine/README.md
+            engine/output/ffmpeg-downloads)
+          if [ -d engine/patches ]; then paths+=(engine/patches); fi
+          tar --exclude=engine/ffmpeg/.git -czf output/ffmpeg-corresponding-source.tar.gz "${paths[@]}"
+      - uses: actions/upload-artifact@v4
+        if: matrix.target == 'linux-glibc-x64'
+        with:
+          name: ffmpeg-corresponding-source
+          path: output/ffmpeg-corresponding-source.tar.gz
+          if-no-files-found: error
+
+  package:
+    needs: build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.22.2
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ffmpeg-native-*
+          path: engine/artifacts
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: ffmpeg-relink-*
+          path: output/distribution/relink
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: ffmpeg-corresponding-source
+          path: output/distribution/source
+      - name: Validate, sync and pack plugin
+        run: |
+          node engine/sync-to-plugin.mjs
+          npm run build
+          node test/native-loader.mjs
+          npm pack --pack-destination output/distribution
+          for target in win-x64 macos-arm64 linux-glibc-x64 linux-glibc-arm64 linux-musl-x64 linux-musl-arm64; do
+            test -s "output/distribution/relink/ffmpeg-relink-$target.tar.gz"
+          done
+          test -s output/distribution/source/ffmpeg-corresponding-source.tar.gz
+      - name: Record distribution hashes
+        working-directory: output/distribution
+        run: sha256sum *.tgz relink/*.tar.gz source/*.tar.gz > SHA256SUMS
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-plugin-distribution
+          path: output/distribution/
+          if-no-files-found: error

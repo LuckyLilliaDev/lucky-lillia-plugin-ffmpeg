@@ -1,0 +1,21 @@
+{
+  "referenceDecoder": "Unmodified silk/test/Decoder.c and generic C SDK 1.0.9.6 from kn007/silk-v3-decoder@507be6bca8ce1fb977a061481f1d79e8c610e309, -Fs_API 24000 -quiet",
+  "framingAdaptation": "Remove Tencent prefix byte 0x02 and append terminal length -1. Encoded packet payloads and lengths are unchanged.",
+  "originalWasmMetadata": "Original silk-wasm 3.7.1 decoded hashes remain in the original JSON sidecars for provenance. Its decoder wrapper does not update nBytesPerPacket[MAX_LBRR_DELAY] after reading new packets, so after the first two packets its PCM differs from the upstream SDK. Native decoding must match the unchanged upstream SDK, not that wrapper behavior.",
+  "wasmDecoderSource": "https://github.com/idranme/silk-wasm/blob/5971995be3ce05d4a1bf820fdf9d7ccdc942e945/binding/libSilkCodec/src/decoder.c",
+  "wasmDecoderSourceSha256": "b685414a53cef731a3ae5db962e348ed8638278f480eea778945ba884ff22608",
+  "records": [
+    {
+      "file": "interop-wasm-24k.silk",
+      "encodedSha256": "64acf8da8e0ebaabee12f5232b45c91fa15c4cafe845a90d5653473b42659a93",
+      "decodedPcmSha256": "8861873a6740de05fb8ac56cac4bba3b51497e4ecc1112d33398732c6a08327c",
+      "decodedPcmBytes": 48000
+    },
+    {
+      "file": "silk-wasm.silk",
+      "encodedSha256": "fc48a75fc449bee4b2dd3fc1b51cd3e6fda794c8850bb67c4a7f26b95754f7ce",
+      "decodedPcmSha256": "0dae8065ce435fe9a928dc5cc247ea96f24210a975d92b7ff215132d96d04d2f",
+      "decodedPcmBytes": 48000
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "addonSourceSha256": "a0c2764338fd4b17cb9d9545c277e830b43dc8f15aec771b46357f69840ef85e",
+  "componentConfigSha256": "2333f21f847e5b5be73fefe4f05b393ae1fa1bbefb4db1c7c5d190cee6c736c8",
+  "ffmpegVersion": "8.0.git",
+  "napiVersion": 8,
+  "silkSource": {
+    "upstream": {
+      "url": "https://github.com/kn007/silk-v3-decoder.git",
+      "commit": "507be6bca8ce1fb977a061481f1d79e8c610e309"
+    },
+    "sourceTreeSha256": "ea860b2fbb857ddb386a6b3152bc5aafbca880a87356b42f4d6c8294fe873c85"
+  },
+  "source": {
+    "sourceTreeSha256": "679758ea78c023abb8a9e24045b3b2c6fef1a699545aa79bdcbcc5dc57c2b318",
+    "upstream": {
+      "url": "https://github.com/FFmpeg/FFmpeg.git",
+      "commit": "9bfa1635aef08e777deaeeae15ff9a5ade412188"
+    },
+    "patches": [],
+    "legacySnapshotSha256": "ef348c4516d89d29f24f23d9210e75bef3ab85c1a6bd69d7415a500122f6f926",
+    "version": "8.0.git",
+    "sourceHashExclusions": [
+      "tests/ref/fate/h264-conformance-canl1_toshiba_g",
+      "tests/ref/fate/h264-conformance-cvmaqp2_sony_g"
+    ],
+    "fullSourceTreeSha256": "6235b79db0cfea8b4e91a415e2a9127faef8c11b5ca26129067121b52d41b0d5",
+    "fullSourceFileCount": 10080
+  },
+  "targets": [
+    "win-x64",
+    "macos-arm64",
+    "linux-glibc-x64",
+    "linux-glibc-arm64",
+    "linux-musl-x64",
+    "linux-musl-arm64"
+  ]
+}
