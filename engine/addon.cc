@@ -608,7 +608,9 @@ constexpr AudioFormat audio_formats[] = {
   { "wma", "asf", "wmav2", 44100, 0, 64000 },
   { "m4a", "ipod", "aac", 0, 0, 64000 },
   { "spx", "ogg", "libspeex", 16000, 0, 24000 },
-  { "ogg", "ogg", "libvorbis", 0, 0, 64000 },
+  // Vorbis chooses a supported bitrate for the input rate/channels in VBR mode.
+  // A fixed 64 kb/s is outside its supported range for 8/12 kHz QQ voice.
+  { "ogg", "ogg", "libvorbis", 0, 0, 0 },
   { "wav", "wav", "pcm_s16le", 0, 0, 0 },
   { "flac", "flac", "flac", 0, 0, 0 },
 };

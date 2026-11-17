@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "target": "win-x64",
   "filename": "LuckyLillia.FFmpeg.node",
-  "sha256": "a433d9e237192187f135462de40f2d7ccde839684faa5ea6418f0f15e3e18e20",
-  "addonSourceSha256": "a0c2764338fd4b17cb9d9545c277e830b43dc8f15aec771b46357f69840ef85e",
+  "sha256": "172ae16ade64cde24cc4ee25ed08831dba5cfc01952e22bb6d5eb86e2174bf47",
+  "addonSourceSha256": "8270cbfb0b60a42f6d3a9bd388d55eaebcc4a2ca90374d78c0d24c009dda18e2",
   "ffmpegVersion": "8.0.git",
   "napiVersion": 8,
   "source": {

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "addonSourceSha256": "a0c2764338fd4b17cb9d9545c277e830b43dc8f15aec771b46357f69840ef85e",
+  "addonSourceSha256": "8270cbfb0b60a42f6d3a9bd388d55eaebcc4a2ca90374d78c0d24c009dda18e2",
   "componentConfigSha256": "2333f21f847e5b5be73fefe4f05b393ae1fa1bbefb4db1c7c5d190cee6c736c8",
   "ffmpegVersion": "8.0.git",
   "napiVersion": 8,

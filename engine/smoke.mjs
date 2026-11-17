@@ -73,6 +73,35 @@ try {
     if (format === 'wav' || format === 'flac') assert.deepEqual(decoded, pcm)
     results.push({ format, bytes: info.size, duration: info.duration, decodedBytes: decoded.length })
   }
+  // QQ can return narrowband AMR instead of the uploaded SILK. Ogg output
+  // should preserve the source rate and channels for both encoding APIs.
+  const vorbisRates = [8000, 12000, 16000, 24000, 44100, 48000]
+  for (const sampleRate of vorbisRates) {
+    for (const channels of [1, 2]) {
+      const samples = sampleRate / 4
+      const sourcePcm = Buffer.alloc(samples * channels * 2)
+      for (let index = 0; index < samples; index++) {
+        for (let channel = 0; channel < channels; channel++) {
+          sourcePcm.writeInt16LE(Math.round(Math.sin(index * 2 * Math.PI * (440 + channel * 220) / sampleRate) * 8000), (index * channels + channel) * 2)
+        }
+      }
+      const wave = path.join(directory, `vorbis-input-${sampleRate}-${channels}.wav`)
+      await native.encodeAudio(sourcePcm, wave, { format: 'wav', sampleRate, channels })
+      for (const operation of ['encode', 'transcode']) {
+        const output = path.join(directory, `vorbis-${operation}-${sampleRate}-${channels}.ogg`)
+        if (operation === 'encode') await native.encodeAudio(sourcePcm, output, { format: 'ogg', sampleRate, channels })
+        else await native.transcodeAudio(wave, output, { format: 'ogg' })
+        const encoded = await readFile(output)
+        const header = encoded.indexOf(Buffer.from('\x01vorbis'))
+        assert.ok(header >= 0, 'Missing Vorbis identification header')
+        assert.equal(encoded[header + 11], channels)
+        assert.equal(encoded.readUInt32LE(header + 12), sampleRate)
+        assert.ok(Math.abs((await native.probe(output)).duration - 0.25) < 0.05)
+        assert.ok((await native.decodeAudio(output, { sampleRate, channels })).length >= samples * channels * 2 * 0.8)
+      }
+    }
+  }
+  console.log(JSON.stringify({ vorbisRegressionPassed: true, sampleRates: vorbisRates, channels: [1, 2], operations: ['encode', 'transcode'] }))
   const stereo = Buffer.alloc(44100 * 4)
   for (let i = 0; i < 44100; i++) {
     stereo.writeInt16LE(Math.round(Math.sin(i * 2 * Math.PI * 440 / 44100) * 8000), i * 4)

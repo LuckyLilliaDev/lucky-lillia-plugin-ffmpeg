@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "target": "linux-glibc-x64",
   "filename": "LuckyLillia.FFmpeg.node",
-  "sha256": "fbb16db4f34c293c5ed09a099f264765f2e095f57b86049024f27a8e98bdcaae",
-  "addonSourceSha256": "a0c2764338fd4b17cb9d9545c277e830b43dc8f15aec771b46357f69840ef85e",
+  "sha256": "f7ccd77d10e8a2be64541a4fd1ff21011371ff864a0e89af7dad91c3fd5b6116",
+  "addonSourceSha256": "8270cbfb0b60a42f6d3a9bd388d55eaebcc4a2ca90374d78c0d24c009dda18e2",
   "ffmpegVersion": "8.0.git",
   "napiVersion": 8,
   "source": {
@@ -118,8 +118,7 @@
       "LLVM libunwind",
       "Zig compiler-rt"
     ],
-    "sourceSha256": "a0c2764338fd4b17cb9d9545c277e830b43dc8f15aec771b46357f69840ef85e",
-    "validation": "Full media and native SILK smoke passed: independent WASM fixture decode, upstream SDK 40/60/100 ms and mixed packet lengths, malformed payload rejection, resampling, concurrency, and legacy eight audio/video checks",
-    "runtime": "WSL Ubuntu Node 24.18.0"
+    "sourceSha256": "8270cbfb0b60a42f6d3a9bd388d55eaebcc4a2ca90374d78c0d24c009dda18e2",
+    "validation": "compiled; run target smoke separately"
   }
 }

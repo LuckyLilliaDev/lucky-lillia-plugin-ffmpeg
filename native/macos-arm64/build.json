@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "target": "macos-arm64",
   "filename": "LuckyLillia.FFmpeg.node",
-  "sha256": "f224defda2d8158820a4f305895790e131c0b8914de2fd79aec35767cea69256",
-  "addonSourceSha256": "a0c2764338fd4b17cb9d9545c277e830b43dc8f15aec771b46357f69840ef85e",
+  "sha256": "a517aed1b30fe78fef2c9b3e9bf609cf247b225397e711f0ebedfb8798389266",
+  "addonSourceSha256": "8270cbfb0b60a42f6d3a9bd388d55eaebcc4a2ca90374d78c0d24c009dda18e2",
   "ffmpegVersion": "8.0.git",
   "napiVersion": 8,
   "source": {
@@ -114,8 +114,7 @@
       "LLVM libunwind",
       "Zig compiler-rt"
     ],
-    "sourceSha256": "a0c2764338fd4b17cb9d9545c277e830b43dc8f15aec771b46357f69840ef85e",
-    "validation": "Compiled Mach-O ARM64; N-API exports, only libSystem imports and macOS 11 minimum verified; no runtime execution claimed",
-    "runtime": "No macOS runtime available; Mach-O architecture, N-API exports, minimum OS and dynamic imports inspected"
+    "sourceSha256": "8270cbfb0b60a42f6d3a9bd388d55eaebcc4a2ca90374d78c0d24c009dda18e2",
+    "validation": "compiled; run target smoke separately"
   }
 }
