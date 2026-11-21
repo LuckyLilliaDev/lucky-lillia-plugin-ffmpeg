@@ -1,10 +1,10 @@
-import { Service } from '@luckylillia/plugin-sdk'
+import { Service } from '@luckylillia-dev/plugin-sdk'
 import { createRequire } from 'node:module'
 import { fileURLToPath } from 'node:url'
 
 export const name = 'ffmpeg'
 
-/** @param {import('@luckylillia/plugin-sdk').Context} ctx */
+/** @param {import('@luckylillia-dev/plugin-sdk').Context} ctx */
 export function apply(ctx) {
   const require = createRequire(import.meta.url)
   const nativeRoot = fileURLToPath(new URL('../native/', import.meta.url))

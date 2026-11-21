@@ -22,10 +22,10 @@ for (let index = 2; index < process.argv.length; index++) {
 // Only this test maps the unpublished SDK to a local host. The distributed
 // plugin imports the host-provided SDK normally and bundles no host runtime.
 const hostRequire = createRequire(path.join(host, 'package.json'))
-const sdkUrl = pathToFileURL(hostRequire.resolve('@luckylillia/plugin-sdk')).href
+const sdkUrl = pathToFileURL(hostRequire.resolve('@luckylillia-dev/plugin-sdk')).href
 const hooks = registerHooks({
   resolve(specifier, context, nextResolve) {
-    if (specifier === '@luckylillia/plugin-sdk') return { url: sdkUrl, shortCircuit: true }
+    if (specifier === '@luckylillia-dev/plugin-sdk') return { url: sdkUrl, shortCircuit: true }
     return nextResolve(specifier, context)
   },
 })

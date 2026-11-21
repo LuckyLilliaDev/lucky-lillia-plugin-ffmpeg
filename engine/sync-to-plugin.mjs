@@ -126,7 +126,7 @@ const buildSources = {
 files.push({ name: 'build-sources.json', bytes: Buffer.from(JSON.stringify(buildSources, null, 2) + '\n') })
 
 if (!check) {
-  if (json(path.join(plugin, 'package.json')).name !== 'lucky-lillia-plugin-ffmpeg') fail('Destination is not the FFmpeg plugin: ' + plugin)
+  if (json(path.join(plugin, 'package.json')).name !== '@luckylillia-dev/plugin-ffmpeg') fail('Destination is not the FFmpeg plugin: ' + plugin)
   const destination = path.join(plugin, 'native')
   regularFile(path.join(destination, 'loader.cjs'))
   for (const file of files) {

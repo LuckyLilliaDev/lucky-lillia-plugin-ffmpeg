@@ -1,6 +1,9 @@
-name: Build FFmpeg plugin
+name: Build and publish FFmpeg plugin
 
+# Manual runs build and pack only; pushing a v* tag also publishes to npm.
 on:
+  push:
+    tags: ['v*']
   workflow_dispatch:
 
 permissions:
@@ -180,3 +183,45 @@ jobs:
           name: ffmpeg-plugin-distribution
           path: output/distribution/
           if-no-files-found: error
+
+  publish:
+    needs: package
+    if: github.event_name == 'push' && github.ref_type == 'tag'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org/
+      - name: Install npm with trusted publishing support
+        run: npm install --global npm@11.16.0 --ignore-scripts
+      - uses: actions/download-artifact@v4
+        with:
+          name: ffmpeg-plugin-distribution
+          path: output/distribution
+      - name: Check release metadata
+        id: release
+        run: |
+          node --input-type=module <<'NODE'
+          import { appendFileSync, readFileSync } from 'node:fs'
+          const pkg = JSON.parse(readFileSync('package.json', 'utf8'))
+          if (process.env.GITHUB_REF_NAME !== 'v' + pkg.version) throw new Error('Release tag must equal v' + pkg.version)
+          const tarball = 'output/distribution/' + pkg.name.replace(/^@/, '').replace('/', '-') + '-' + pkg.version + '.tgz'
+          readFileSync(tarball)
+          const response = await fetch('https://registry.npmjs.org/' + encodeURIComponent(pkg.name) + '/' + pkg.version, { signal: AbortSignal.timeout(30_000) })
+          if (response.ok) throw new Error(pkg.name + '@' + pkg.version + ' is already published')
+          if (response.status !== 404) throw new Error('npm registry check failed: HTTP ' + response.status)
+          appendFileSync(process.env.GITHUB_OUTPUT, 'tarball=' + tarball + '\ntag=' + (pkg.version.includes('-') ? 'next' : 'latest') + '\n')
+          NODE
+      - name: Publish with npm trusted publishing
+        env:
+          PACKAGE_TARBALL: ${{ steps.release.outputs.tarball }}
+          NPM_DIST_TAG: ${{ steps.release.outputs.tag }}
+        run: npm publish "$PACKAGE_TARBALL" --ignore-scripts --provenance --access public --tag "$NPM_DIST_TAG" --registry=https://registry.npmjs.org/

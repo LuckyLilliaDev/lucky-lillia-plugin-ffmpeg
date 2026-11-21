@@ -1,4 +1,4 @@
-import type { Context } from '@luckylillia/plugin-sdk'
-export type { FFmpegAPI, FFmpegAudioFormat, FFmpegMediaInfo } from '@luckylillia/plugin-sdk'
+import type { Context } from '@luckylillia-dev/plugin-sdk'
+export type { FFmpegAPI, FFmpegAudioFormat, FFmpegMediaInfo } from '@luckylillia-dev/plugin-sdk'
 export declare const name: 'ffmpeg'
 export declare function apply(ctx: Context): void
