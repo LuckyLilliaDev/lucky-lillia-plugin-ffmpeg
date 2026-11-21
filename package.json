@@ -1,6 +1,6 @@
 {
   "name": "@luckylillia-dev/plugin-ffmpeg",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "为 LuckyLillia 提供可选的音视频转码、媒体信息和缩略图服务",
   "type": "module",
   "main": "lib/index.js",

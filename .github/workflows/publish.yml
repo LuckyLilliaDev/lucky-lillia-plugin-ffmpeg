@@ -1,6 +1,8 @@
 name: Build and publish FFmpeg plugin
 
-# Manual runs build and pack only; pushing a v* tag also publishes to npm.
+# Pushing a v* tag packs the prebuilt native modules from the GitHub release named in
+# engine/prebuilt.json, verifies them against native/*/build.json and publishes to npm.
+# Manual runs build all six native modules from source and pack them without publishing.
 on:
   push:
     tags: ['v*']
@@ -10,7 +12,41 @@ permissions:
   contents: read
 
 jobs:
+  prebuilt:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Download prebuilt native modules
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          release=$(node -p "require('./engine/prebuilt.json').release")
+          for target in win-x64 macos-arm64 linux-glibc-x64 linux-glibc-arm64 linux-musl-x64 linux-musl-arm64; do
+            gh release download "$release" -R "$GITHUB_REPOSITORY" -p "LuckyLillia.FFmpeg-$target.node" -O "native/$target/LuckyLillia.FFmpeg.node"
+          done
+      - name: Verify, test and pack plugin
+        run: |
+          # build.mjs and the loader reject any module whose sha256 or source hashes differ from native/*/build.json
+          npm run build
+          node test/native-loader.mjs
+          node engine/smoke.mjs native/linux-glibc-x64/LuckyLillia.FFmpeg.node > "$RUNNER_TEMP/smoke.log" 2>&1 || { tail -50 "$RUNNER_TEMP/smoke.log"; exit 1; }
+          mkdir -p output/distribution
+          npm pack --pack-destination output/distribution
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ffmpeg-plugin-distribution
+          path: output/distribution/
+          if-no-files-found: error
+
   build:
+    if: github.event_name == 'workflow_dispatch'
     strategy:
       fail-fast: false
       matrix:
@@ -185,7 +221,7 @@ jobs:
           if-no-files-found: error
 
   publish:
-    needs: package
+    needs: prebuilt
     if: github.event_name == 'push' && github.ref_type == 'tag'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
